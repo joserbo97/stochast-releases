@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stochast privacy</title>
+<link rel="icon" href="img/mark.svg">
+<style>
+  @font-face { font-family: "Space Grotesk"; src: url("fonts/SpaceGrotesk.ttf") format("truetype"); font-weight: 300 700; font-display: swap; }
+  :root { --bg: #ece7da; --surface: #fbf9f4; --ink: #1b2140; --muted: #585d73; --accent: #b8430f; color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #11152b; --surface: #1b2140; --ink: #f4f1e8; --muted: #a9acbf; --accent: #ff7a45; } }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 20px 64px; }
+  a { color: var(--accent); }
+  h1, h2 { font-family: "Space Grotesk", -apple-system, system-ui, sans-serif; letter-spacing: -0.02em; line-height: 1.2; }
+  h1 { font-size: 34px; margin: 24px 0 8px; }
+  h2 { font-size: 20px; margin: 32px 0 8px; }
+  .meta { color: var(--muted); font-size: 14px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font: 700 18px "Space Grotesk", system-ui, sans-serif; color: var(--ink); text-decoration: none; }
+  .brand img { width: 32px; height: 32px; border-radius: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="brand" href="./"><img src="img/mark.svg" alt="">Stochast</a>
+  <h1>Privacy</h1>
+  <p class="meta">Soulbridge Corp · last updated 21 November 2026</p>
+
+  <h2>Your workbooks stay on your Mac</h2>
+  <p>Stochast runs entirely on your Mac. It reads and writes only the workbook you are working in, and only when
+    you ask it to (adding a cell to a model, running a simulation, writing a report). Models and results are saved
+    inside that workbook. Stochast has no account, no sign-in and no server of its own on the internet.</p>
+
+  <h2>Nothing is sent anywhere</h2>
+  <p>The Stochast pane is served by a small program on your own Mac (at <code>localhost</code>), and the pane is
+    blocked from contacting any other address. It does not collect usage statistics, crash reports or analytics,
+    and it does not check for updates. The Office.js library it ships with tries to load Microsoft telemetry; the
+    pane blocks that too.</p>
+
+  <h2>What others may see</h2>
+  <ul>
+    <li>Excel itself is Microsoft's software and follows Microsoft's privacy statement, whatever add-ins you use.</li>
+    <li>This download page and the installer files are hosted on GitHub, which may log visits and downloads under
+      GitHub's own privacy statement.</li>
+    <li><strong>Help and feedback</strong> in the pane opens a GitHub page in your browser. Anything you post there
+      is public and is handled under GitHub's terms.</li>
+  </ul>
+
+  <h2>What the installer changes</h2>
+  <p>It adds Stochast to <code>/Library/Application Support/Stochast</code>, starts its local server when you log
+    in, adds Stochast to Excel's add-in list, and trusts a certificate that can only be used for your own Mac
+    (<code>localhost</code>). <strong>Uninstall-Stochast.pkg</strong> removes all of it. Your workbooks are not
+    touched.</p>
+
+  <h2>Questions</h2>
+  <p>Ask on the <a href="https://github.com/joserbo97/stochast-releases/issues">Stochast issues page</a>.</p>
+</div>
+</body>
+</html>

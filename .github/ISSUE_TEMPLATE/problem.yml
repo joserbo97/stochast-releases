@@ -1,0 +1,25 @@
+name: Problem
+description: Something in Stochast does not work as it should
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you saw instead. A screenshot helps.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Stochast version
+      description: Shown at the bottom of the Stochast pane, for example "Stochast 1.2.0".
+    validations:
+      required: true
+  - type: input
+    id: mac
+    attributes:
+      label: macOS and Excel versions
+      description: For example "macOS 26.5, Excel 16.115".
+  - type: markdown
+    attributes:
+      value: Please do not paste confidential workbook data. Issues are public.

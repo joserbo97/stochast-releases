@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stochast for Excel on Mac</title>
+<meta name="description" content="Monte Carlo simulation, forecasting, optimization and statistics inside Excel for Mac. Runs entirely on your Mac.">
+<link rel="icon" href="img/mark.svg">
+<style>
+  /* Same palette as the add-in (see DESIGN.md): navy ink, cream paper, signal orange. */
+  @font-face { font-family: "Space Grotesk"; src: url("fonts/SpaceGrotesk.ttf") format("truetype"); font-weight: 300 700; font-display: swap; }
+  :root {
+    --bg: #ece7da; --surface: #fbf9f4; --ink: #1b2140; --muted: #585d73; --line: #e3ddcf;
+    --accent: #b8430f; --accent-ink: #ffffff; --hero: #1b2140; --hero-ink: #f4f1e8; --hero-accent: #ff7a45;
+    --display: "Space Grotesk", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #11152b; --surface: #1b2140; --ink: #f4f1e8; --muted: #a9acbf; --line: #2c345a; --accent: #ff7a45; --accent-ink: #1b2140; --hero: #0c1022; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 -apple-system, BlinkMacSystemFont, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; line-height: 1.15; margin: 0; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  header { background: var(--hero); color: var(--hero-ink); padding: 56px 0 64px; }
+  .brand { display: flex; align-items: center; gap: 12px; font: 700 22px var(--display); }
+  .brand img { width: 40px; height: 40px; border-radius: 10px; }
+  .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; margin-top: 40px; }
+  .hero h1 { font-size: clamp(34px, 5vw, 52px); }
+  .hero h1 em { font-style: normal; color: var(--hero-accent); }
+  .hero p { color: #c9cadb; font-size: 18px; max-width: 34em; margin: 18px 0 28px; }
+  .get { display: inline-block; background: var(--hero-accent); color: #1b2140; font: 700 17px var(--display); padding: 14px 26px; border-radius: 12px; text-decoration: none; }
+  .get:hover { background: #ff9467; }
+  .fine { color: #a9acbf; font-size: 14px; margin-top: 14px; }
+  .fine code { color: #e9e6dc; font-size: 12px; overflow-wrap: anywhere; }
+  .shot { border-radius: 18px; box-shadow: 0 24px 60px rgb(0 0 0 / 0.45); width: 100%; max-width: 360px; justify-self: center; }
+  section { padding: 64px 0; }
+  section h2 { font-size: 30px; margin-bottom: 8px; }
+  .lede { color: var(--muted); margin: 0 0 32px; max-width: 40em; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .card { background: var(--surface); border-radius: 16px; padding: 22px; }
+  .card h3 { font-size: 19px; margin-bottom: 6px; }
+  .card h3::before { content: ""; display: block; width: 28px; height: 4px; border-radius: 2px; background: var(--accent); margin-bottom: 14px; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; }
+  .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .shots figure { margin: 0; }
+  .shots img { width: 100%; border-radius: 14px; border: 1px solid var(--line); display: block; }
+  .shots figcaption { color: var(--muted); font-size: 14px; margin-top: 10px; }
+  ol.steps { padding-left: 1.3em; margin: 0; }
+  ol.steps li { margin: 10px 0; padding-left: 4px; }
+  ol.steps li::marker { font: 700 16px var(--display); color: var(--accent); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+  footer .links { margin: 0 0 10px; }
+  .card p.mt { margin-top: 12px; }
+  @media (max-width: 860px) {
+    .hero, .two { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: 1fr 1fr; }
+    .shots { grid-template-columns: 1fr; max-width: 360px; }
+  }
+  @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } header { padding-top: 32px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><img src="img/mark.svg" alt="">Stochast</div>
+    <div class="hero">
+      <div>
+        <h1>Know the odds <em>before</em> you commit.</h1>
+        <p>Stochast adds Monte Carlo simulation, forecasting, optimization and about 150 analysis and forecasting tools to
+          Excel for Mac. It works on your own workbooks, and everything runs on your Mac: nothing is sent anywhere.</p>
+        <a class="get" id="download" href="https://github.com/joserbo97/stochast-releases/releases/download/v1.2.0/Stochast-1.2.0.pkg">Download for Mac</a>
+        <p class="fine">Version <span id="version">1.2.0</span> · macOS 13.5 or later · Apple silicon and Intel · Excel for
+          Microsoft 365<br>SHA-256 <code id="sha">a0ab4b9571c85ba8895bac2edab6ffa112ee908f8a764af09c6c2dc75a96be4b</code></p>
+      </div>
+      <img class="shot" src="img/results.png" alt="The Stochast pane showing a simulated profit forecast: mean, the range covering 90% of trials, and a histogram.">
+    </div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <h2>Four modules, one pane</h2>
+      <p class="lede">Mark the uncertain inputs in a spreadsheet you already have, and Stochast tells you how likely
+        each outcome is, what drives it, and which choice holds up best.</p>
+      <div class="grid">
+        <div class="card"><h3>Simulate</h3><p>Give uncertain cells a distribution, run thousands of trials, and read the
+          chance of hitting a target, the drivers and the full forecast chart.</p></div>
+        <div class="card"><h3>Analyze</h3><p>Tornado and scenario analysis, distribution fitting, bootstrap, hypothesis
+          tests, ANOVA, reliability and machine learning on any range.</p></div>
+        <div class="card"><h3>Forecast</h3><p>Time-series methods, ARIMA, regression and econometrics, trend curves,
+          stochastic processes and volatility models.</p></div>
+        <div class="card"><h3>Optimize</h3><p>Choose decision cells, limits and a goal, then search for the best values,
+          optionally simulating every candidate.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>See it</h2>
+      <p class="lede">The pane sits beside your workbook, in light or dark mode.</p>
+      <div class="shots">
+        <figure><img src="img/get-started.png" alt="The Get started card: three steps and ready-made example models."><figcaption>A first model in one click, from 15 ready-made examples.</figcaption></figure>
+        <figure><img src="img/results.png" alt="Simulation results with a histogram and certainty range."><figcaption>Results answer the question: how likely, and how far it can go.</figcaption></figure>
+        <figure><img src="img/browse-tools.png" alt="The Analyze tools grouped by topic."><figcaption>Every analysis tool, browsable by topic or found by search.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap two">
+      <div class="card">
+        <h3>Install</h3>
+        <ol class="steps">
+          <li>Download the installer and quit Excel.</li>
+          <li>Open the file. If macOS says it cannot check it, open System Settings › Privacy &amp; Security and choose
+            <strong>Open Anyway</strong>.</li>
+          <li>Follow the installer; it asks once for your password to trust a certificate used only by Stochast.</li>
+          <li>Open Excel and choose <strong>Home › Stochast</strong>.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Private by design</h3>
+        <p>Stochast brings its own copy of everything it needs, so it works with no internet connection. The pane is
+          blocked from contacting any host other than your own Mac, and its certificate can only vouch for
+          <code>localhost</code>. Read the <a href="privacy.html">privacy notice</a>.</p>
+        <p class="mt">To remove Stochast, open <a id="uninstaller" href="https://github.com/joserbo97/stochast-releases/releases/download/v1.2.0/Uninstall-Stochast.pkg">Uninstall-Stochast.pkg</a>.
+          Your workbooks are not touched.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="links"><a href="https://github.com/joserbo97/stochast-releases/issues">Help and feedback</a> ·
+      <a href="https://github.com/joserbo97/stochast-releases/releases">All versions and what changed</a> ·
+      <a href="privacy.html">Privacy</a></p>
+    © 2026 Soulbridge Corp. Stochast is not made or endorsed by Microsoft. Microsoft and Excel are trademarks of the
+    Microsoft group of companies.
+  </div>
+</footer>
+</body>
+</html>
